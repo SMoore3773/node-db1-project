@@ -46,4 +46,38 @@ router.post('/', async (req,res)=>{
         }  
 })
 
+router.put('/:id', async(req,res)=>{
+    const {id} = req.params;
+    const acctDat = req.body;
+    try{
+        if(!acctDat){
+            res.status(400).json({message:"this post request needs a body"})
+        }else if(!acctDat.name){
+            res.status(400).json({message:"this post needs a name"})
+        }else if(!acctDat.budget){
+            res.status(400).json({message:"this post needs a budget"})
+        }else{
+            await db('accounts').where('id',id).update({name: acctDat.name, budget: acctDat.budget},['id','name','budget']);
+            res.status(201).json({message:"update successful"});
+        }
+    }
+    catch(err){
+            res.status(500).json({message:"there was an error in posting"})
+        }  
+})
+
+router.delete('/:id', async (req, res)=>{
+    const {id} = req.params;
+    try{
+        if(!id){
+            res.status(404).json({message:"no account with this id found"})
+        }else{
+        await db('accounts').where('id',id).del();
+        res.status(204).json({message:"account deleted"})
+        }
+    }
+    catch(err){
+        res.status(500).json({message:"there was an error in deleting the account"});
+    }
+})
 module.exports = router;
