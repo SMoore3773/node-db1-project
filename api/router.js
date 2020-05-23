@@ -38,7 +38,7 @@ router.post('/', async (req,res)=>{
             res.status(400).json({message:"this post needs a budget"})
         }else{
             const acct = await db('accounts').insert({name: acctDat.name, budget: acctDat.budget});
-            res.status(201).json(acct);
+            res.status(201).json({name: acctDat.name, budget: acctDat.budget});
         }
     }
     catch(err){
@@ -73,7 +73,7 @@ router.delete('/:id', async (req, res)=>{
             res.status(404).json({message:"no account with this id found"})
         }else{
         await db('accounts').where('id',id).del();
-        res.status(204).json({message:"account deleted"})
+        res.status(204).json({})
         }
     }
     catch(err){
