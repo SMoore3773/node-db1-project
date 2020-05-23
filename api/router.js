@@ -58,7 +58,7 @@ router.put('/:id', async(req,res)=>{
             res.status(400).json({message:"this post needs a budget"})
         }else{
             await db('accounts').where('id',id).update({name: acctDat.name, budget: acctDat.budget},['id','name','budget']);
-            res.status(201).json({message:"update successful"});
+            res.status(201).json({message:"update successful", name:acctDat.name, budget:acctDat.budget});
         }
     }
     catch(err){
